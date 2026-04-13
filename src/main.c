@@ -9,7 +9,7 @@ int main() {
         printf("The connection opened successfully.\n");
     } else {
         const char* errorMessage = sqlite3_errmsg(db);
-        printf("Failed to open database: %s", errorMessage);
+        printf("Failed to open database: %s\n", errorMessage);
         return 1;
     }
 
@@ -17,11 +17,21 @@ int main() {
 // SQL TABLE
     char *errmsg = NULL;
     
-    int exec_result = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS cards (id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT NOT NULL, phonetic TEXT, example TEXT, translation TEXT, easiness REAL DEFAULT 2.5, interval INTEGER DEFAULT 1, repetitions INTEGER DEFAULT 0, next_review TEXT DEFAULT (date('now')));", NULL, NULL, &errmsg);
+    int exec_result = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS cards ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "word TEXT NOT NULL, "
+        "phonetic TEXT, "
+        "example TEXT, "
+        "translation TEXT, "
+        "easiness REAL DEFAULT 2.5, "
+        "interval INTEGER DEFAULT 1, "
+        "repetitions INTEGER DEFAULT 0, "
+        "next_review TEXT DEFAULT (date('now')));", NULL, NULL, &errmsg);
     if (exec_result == SQLITE_OK) {
-        printf("Table created.");
+        printf("Table created.\n");
     } else {
-        printf("Failled to create table.");
+        printf("Failled to create table: %s\n", errmsg);
+        return 1;
     }
 
     sqlite3_close(db);
