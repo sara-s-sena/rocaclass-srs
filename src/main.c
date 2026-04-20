@@ -1,3 +1,5 @@
+// I started this program by including four libraries, including "card.h", which defines the structure for storing card data. I began by opening a SQLite3 database, then used the sqlite3_exec function to create the table if it didn't exist. For the statement function, sqlite3_prepare_v2 was useful because it compiles the SQL into a prepared statement, making execution safer and more efficient. For the bind function, sqlite3_bind_text takes five parameters: the statement, the index, the value, the length, and the destructor. This is important because it securely inserts values without manually building SQL strings, reducing errors and preventing SQL injection. In contrast, directly concatenating values into SQL is unsafe and error-prone. Then, I executed sqlite3_step to run the prepared statement and finally used sqlite3_finalize to release resources. Using prepared statements was preferable because they improve performance, ensure type safety, and protect against SQL injection.
+
 #include <stdio.h>
 #include "sqlite3.h"
 #include "card.h"
