@@ -65,9 +65,9 @@ int main() {
         printf("sqlite3_prepare_v2 OK.\n");
     }   else {
             printf("sqlite3_prepare_v2 ERROR.\n");
-            return 1;
 
             printf("SQL error: %s\n", sqlite3_errmsg(db));
+            return 1;
     }
 
 
@@ -146,6 +146,52 @@ int main() {
             printf("return_value_finalize ERROR.\n");
             return 1;
     }
+
+    int return_value_SELECT = sqlite3_prepare_v2(db, "SELECT * FROM cards", -1, &stmt, NULL);
+    if(return_value_SELECT != SQLITE_OK) {
+        printf("SQL error: %s\n", sqlite3_errmsg(db));
+        return 1;
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+
+// SQLITE SELECT / sqlite3_column_*()
+        const unsigned char *word = sqlite3_column_text(stmt, 1);
+        printf("word: %s\n", word);
+
+        const unsigned char *translation = sqlite3_column_text(stmt, 2);
+        printf("translation: %s\n", translation);
+
+        const unsigned char *phonetic = sqlite3_column_text(stmt, 3);
+        printf("phonetic: %s\n", phonetic);
+
+        const unsigned char *example = sqlite3_column_text(stmt, 4);
+        printf("example: %s\n", example);
+
+        const unsigned char *explanation = sqlite3_column_text(stmt, 5);
+        printf("explanation: %s\n", explanation);
+
+        double easiness = sqlite3_column_double(stmt, 6);
+        printf("easiness: %f\n", easiness);
+
+        int interval = sqlite3_column_int(stmt, 7);
+        printf("interval: %d\n", interval);
+
+        int repetitions = sqlite3_column_int(stmt, 8);
+        printf("repetitions: %d\n", repetitions);
+
+        const unsigned char *next_review = sqlite3_column_text(stmt, 9);
+        printf("next_review: %s\n", next_review);
+    }
+
+    int return_value_finalize_select = sqlite3_finalize(stmt);
+    if(return_value_finalize_select == SQLITE_OK) {
+        printf("return_value_finalize_select OK.\n");
+    }   else {
+        printf("return_value_finalize_select ERROR.\n");
+        return 1;
+    }
+
 
     sqlite3_close(db);
 
