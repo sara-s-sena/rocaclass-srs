@@ -4,6 +4,22 @@
 #include "sqlite3.h"
 #include "card.h"
 #include <string.h>
+#include "sm2.h"
+
+//TEST SM2    
+void test_sm2() {
+    Card card;
+    card.easiness = 1.4;
+    card.interval = 6;
+    card.repetitions = 3;
+
+    int q = 1;
+    sm2_update(&card, q);
+
+    printf("EF = %.2f\n", card.easiness);
+    printf("interval = %d\n", card.interval);
+    printf("repetitions = %d\n", card.repetitions);
+}
 
 int main() {
     sqlite3* db;
@@ -194,6 +210,9 @@ int main() {
         return 1;
     }
 
+
+// SM2 CALL
+    test_sm2();
 
     sqlite3_close(db);
 
