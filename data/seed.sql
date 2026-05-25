@@ -1,3 +1,8 @@
+-- © 2026 Sara Souza Sena / Roça Class
+-- Vocabulary content licensed under CC BY-NC 4.0
+-- Commercial use prohibited without written permission.
+-- https://creativecommons.org/licenses/by-nc/4.0/
+
 --5
 INSERT INTO cards (word, translation, phonetic, example, explanation, easiness, interval, repetitions, next_review)
 VALUES ('Trem', 'thing/stuff', 'treng', 'Que trem é esse na sua mão?', 'Used for any object, tool, or food you can''t name right now.', 2.5, 1, 0, date('now'));
