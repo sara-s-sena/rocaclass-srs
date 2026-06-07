@@ -64,25 +64,49 @@ if(return_value_finalize_select != SQLITE_OK) {
 // ADD CARD
 
 int add_card(sqlite3 *db) {
+    // WORD
     printf("Enter word: \n");
     char word[128];
-    fgets(word, sizeof(word), stdin);
+    if (fgets(word, sizeof(word), stdin) == NULL) {
+        printf("Error reading word input.\n");
+        return 0;
+    }
     word[strcspn(word, "\n")] = '\0';
+
+    // TRANSLATION
     printf("Enter translation: \n");
     char translation[256];
-    fgets(translation, sizeof(translation), stdin);
+    if (fgets(translation, sizeof(translation), stdin) == NULL) {
+        printf("Error reading translation input.\n");
+        return 0;
+    }
     translation[strcspn(translation, "\n")] = '\0';
+
+    // PHONETIC
     printf("Enter phonetic: \n");
     char phonetic[128];
-    fgets(phonetic, sizeof(phonetic), stdin);
+    if (fgets(phonetic, sizeof(phonetic), stdin) == NULL) {
+        printf("Error reading phonetic input.\n");
+        return 0;
+    }
     phonetic[strcspn(phonetic, "\n")] = '\0';
+
+    // EXAMPLE
     printf("Enter example: \n");
     char example[512];
-    fgets(example, sizeof(example), stdin);
+    if (fgets(example, sizeof(example), stdin) == NULL) {
+        printf("Error reading example input.\n");
+        return 0;
+    }
     example[strcspn(example, "\n")] = '\0';
+
+    // EXPLANATION
     printf("Enter explanation: \n");
     char explanation[512];
-    fgets(explanation, sizeof(explanation), stdin);
+    if (fgets(explanation, sizeof(explanation), stdin) == NULL) {
+        printf("Error reading explanation input.\n");
+        return 0;
+    }
     explanation[strcspn(explanation, "\n")] = '\0';
 
     Card card;
@@ -210,22 +234,22 @@ while(sqlite3_step(stmt) == SQLITE_ROW) {
     card.id = sqlite3_column_int(stmt, 0);
 
     const unsigned char *word = sqlite3_column_text(stmt, 1);
-    strcpy(card.word, word);
+    strcpy(card.word, (const char *)word);
     printf("word: %s\n", word);
 
     const unsigned char *translation = sqlite3_column_text(stmt, 2);
-    strcpy(card.translation, translation);
+    strcpy(card.translation, (const char *)translation);
 
     const unsigned char *phonetic = sqlite3_column_text(stmt, 3);
-    strcpy(card.phonetic, phonetic);
+    strcpy(card.phonetic, (const char *)phonetic);
     printf("phonetic: %s\n", phonetic);
 
 
     const unsigned char *example = sqlite3_column_text(stmt, 4);
-    strcpy(card.example, example);
+    strcpy(card.example, (const char *)example);
 
     const unsigned char *explanation = sqlite3_column_text(stmt, 5);
-    strcpy(card.explanation, explanation);
+    strcpy(card.explanation, (const char *)explanation);
 
     card.easiness = sqlite3_column_double(stmt, 6);
     card.interval = sqlite3_column_int(stmt, 7);
@@ -233,7 +257,10 @@ while(sqlite3_step(stmt) == SQLITE_ROW) {
 
     printf("Press Enter to see the answer.\n");
     char user_buffer_1[128];
-    fgets( user_buffer_1, sizeof( user_buffer_1), stdin);
+    if (fgets(user_buffer_1, sizeof(user_buffer_1), stdin) == NULL) {
+        printf("Error reading input.\n");
+        return 0;
+    }
     printf("translation: %s\n", translation);
     printf("example: %s\n", example);
     printf("explanation: %s\n", explanation);
@@ -241,7 +268,10 @@ while(sqlite3_step(stmt) == SQLITE_ROW) {
 
     char q_buffer[8];
     printf("Enter a score from 0 to 5:\n");
-    fgets(q_buffer, sizeof(q_buffer), stdin);
+    if (fgets(q_buffer, sizeof(q_buffer), stdin) == NULL) {
+        printf("Error reading score input.\n");
+        return 0;
+    }
     int q = atoi(q_buffer);
     sm2_update(&card, q);
 
